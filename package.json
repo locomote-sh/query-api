@@ -18,7 +18,7 @@
     },
     "homepage": "https://github.com/locomote-sh/query.api#readme",
     "dependencies": {
-        "locomote.sh/idb": "git+https://github.com/locomote-sh/idb.git",
-        "locomote.sh/utils": "git+https://github.com/locomote-sh/utils.git"
+        "@locomote.sh/idb": "git+https://github.com/locomote-sh/idb.git",
+        "@locomote.sh/utils": "git+https://github.com/locomote-sh/utils.git"
     }
 }
