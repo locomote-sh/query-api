@@ -1,24 +1,24 @@
 {
-    "name": "@locomote.sh/file.api",
+    "name": "@locomote.sh/query-api",
     "version": "0.8.2",
-    "description": "Locomote content server file API core functions",
+    "description": "Locomote content server query API core functions",
     "main": "lib/query.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/locomote-sh/file.api.git"
+        "url": "git+https://github.com/locomote-sh/query-api.git"
     },
     "keywords": [],
     "author": "Julian Goacher",
     "license": "Apache-2.0",
     "bugs": {
-        "url": "https://github.com/locomote-sh/file.api/issues"
+        "url": "https://github.com/locomote-sh/query-api/issues"
     },
-    "homepage": "https://github.com/locomote-sh/file.api#readme",
+    "homepage": "https://github.com/locomote-sh/query-api#readme",
     "dependencies": {
-        "@locomote.sh/idb": "file:../idb",
+        "@locomote.sh/idb": "git+https://github.com/locomote-sh/idb.git",
         "@locomote.sh/utils": "git+https://github.com/locomote-sh/utils.git"
     }
 }
