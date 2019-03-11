@@ -1,6 +1,6 @@
 {
     "name": "@locomote.sh/query-api",
-    "version": "0.8.4",
+    "version": "0.8.5",
     "description": "Locomote content server query API core functions",
     "main": "lib/query.js",
     "scripts": {
