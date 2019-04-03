@@ -1,6 +1,6 @@
 {
     "name": "@locomote.sh/query-api",
-    "version": "0.8.5",
+    "version": "0.8.6",
     "description": "Locomote content server query API core functions",
     "main": "lib/query.js",
     "scripts": {
@@ -19,10 +19,10 @@
     "homepage": "https://github.com/locomote-sh/query-api#readme",
     "dependencies": {
         "@locomote.sh/idb": "git+https://github.com/locomote-sh/idb.git",
-        "@locomote.sh/utils": "git+https://github.com/locomote-sh/utils.git"
+        "@locomote.sh/utils": "git+https://github.com/locomote-sh/utils.git",
+        "indexeddbshim": "^3.10.0"
     },
     "devDependencies": {
-        "indexeddbshim": "^3.10.0",
         "mocha": "^5.2.0"
     }
 }

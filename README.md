@@ -1,14 +1,71 @@
 # query-api
 
-Core file querying API for Locomote.
+A HTTP compatible API for querying IndexedDB object store contents either in the browser, from a page or service worker context, or server side in a Node.js process.
 
 ## Description
 
-This library provides the core file querying API for Locomote.
-The query API is a HTTP based API for querying file metadata stored in the file DB.
-The query API is designed for use on both client and server.
-When the Locomote service worker is installed and activated on a client then all query API requests are handled locally by the service worker, and can be fully executed in offline mode.
-When the service worker is not installed, or on older clients without service worker support, API requests are executed on the server instead.
+This module provides an API for querying the contents of an IndexedDB object store.
+Queries can be easily and naturally described using the parameters to a HTTP GET request.
+The query engine can run either in the browser or on a Node.js process on the server.
+
+## Motivation
+
+The query API is designed principally for use with service workers to provide offline capable query functionality to web pages.
+
+A difficulty with implementing query functionality within a service worker is the possibility that the service worker isn't available, either because the code is running on a browser without service worker support, but also because of the service worker lifecycle and the possibility that the page is running before the service worker is installed and activated.
+The simplest way to resolve these problems is to ensure that any URLs handled locally by the service worker can also be handled remotely by the originating server.
+
+Using this module, it is possible to support both remote, server-side querying and local, offline querying either in a service worker or in code running in the page, provided some mechanism exists for replicating the object store's contents to both client and server.
+Object store replication is outside of the scope of this module, but primitives are provided via the <https://github.com/locomote-sh/idb> library for manipulating the IndexedDB contents.
+Also see the [Locomote.sh content server](https://github.com/locomote-sh/content-server) and associated [service worker](https://github.com/locomote-sh/sw) for a solution to the replication problem.
+
+## Setup
+
+The following sections describe how to initialize the query API for browser and server-side usage.
+
+In both cases, the query API initializer function returns the following values:
+
+* `query`: The query function; see reference below.
+* `idb`: A functional, promise based wrapper around the standard IndexedDB API. See <https://github.com/locomote-sh/idb>.
+
+### Browser
+
+Import and call the initializer from the browser sub-module:
+
+```js
+    import init from '@locomote.sh/query-api/lib/browser';
+    const { query, idb } = init();
+```
+
+### Server
+
+Import and call the initializer from the external sub-module:
+
+```js
+    import init from '@locomote.sh/query-api/lib/external';
+    const { query, idb } = init();
+```
+
+This will instantiate an transient, in-memory IndexedDB instance.
+If you want to persist the database then provide the path to an on-disk location where database images can be stored:
+
+```js
+    const { query, idb } = init('/var/data/idb');
+```
+
+## Query function
+
+The query function has the following API:
+
+`query( schema, store, params )`
+
+**Arguments**:
+
+* `schema`: A database schema object. See <https://github.com/locomote-sh/idb> for details.
+* `store`: The name of the object store being queried; the store must appear in the schema.
+* `params`: An object containing the query parameters. Can be presented as either a plain object or as an [URLSearchParam object](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams).
+
+**Returns**: A promise resolving to an array or object containing the query results.
 
 ## Usage
 
@@ -71,12 +128,4 @@ The available control parameters are:
     * `$format=lookup`: Return an object mapping each matched record's primary key to the record.
 * `$orderBy`: Specify the sort order of the result. The value is the property path of the value to sort by.
 
-## Files
-
-The module is composed of the following files:
-
-* `lib/query.js`: The query API implementation.
-* `lib/schema.js`: The default file DB schema.
-* `lib/server.js`: Internal functions for calling the query API from a HTTP server.
-* `test/*`: Unit tests.
 
