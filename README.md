@@ -10,14 +10,25 @@ The query engine can run either in the browser or on a Node.js process on the se
 
 ## Motivation
 
-The query API is designed principally for use with service workers to provide offline capable query functionality to web pages.
+The query API is designed principally for use with service workers to provide offline capable querying functionality to web pages.
 
-A difficulty with implementing query functionality within a service worker is the possibility that the service worker isn't available, either because the code is running on a browser without service worker support, but also because of the service worker lifecycle and the possibility that the page is running before the service worker is installed and activated.
+A difficulty with implementing query functionality within a service worker is the possibility that the service worker isn't available, either because the code is running on a browser without service worker support, or because of the service worker lifecycle and the possibility that the page is running before the service worker has been installed and activated.
 The simplest way to resolve these problems is to ensure that any URLs handled locally by the service worker can also be handled remotely by the originating server.
 
-Using this module, it is possible to support both remote, server-side querying and local, offline querying either in a service worker or in code running in the page, provided some mechanism exists for replicating the object store's contents to both client and server.
-Object store replication is outside of the scope of this module, but primitives are provided via the <https://github.com/locomote-sh/idb> library for manipulating the IndexedDB contents.
-Also see the [Locomote.sh content server](https://github.com/locomote-sh/content-server) and associated [service worker](https://github.com/locomote-sh/sw) for a solution to the replication problem.
+Using this module, it is possible to support querying both remotely, on the server-side, or locally, in an offline capable fashion, either in a service worker or in code running in the page.
+This will work provided that both query modes operate on the same data set, e.g. by providing some mechanism for replicating the object store's contents to both client and server.
+
+(Object store replication is outside of the scope of this module, but primitives are provided via the <https://github.com/locomote-sh/idb> library for manipulating the IndexedDB contents.
+Also see the [Locomote.sh content server](https://github.com/locomote-sh/content-server) and associated [service worker](https://github.com/locomote-sh/sw) for a solution to the replication problem.)
+
+With this in mind, it should be seen that the main goal of this module is to provide a standard HTTP API for executing queries, so that a URL like the following:
+
+```
+    https://example.com/query.api?category=sales&name$prefix=Dur&$from=20$$limit=10
+```
+
+- when requested by the browser can be either handled and resolved by the server, or handled locally by a service worker when available, and that both modes can be handled seemlessly with no differences in operation other than response time and offline capability.
+As such, this module should be seen as a specification of the HTTP query API as much as an implementation of that API, and it should be possible to implement the API server side on platforms other than Node.js.
 
 ## Setup
 
@@ -73,13 +84,13 @@ Queries are defined using HTTP request parameters.
 
 ### Filters
 
-The most basic usage pattern is to filter the contents of the file DB by a specified value on a named property, for example:
+The most basic usage pattern is to filter the contents of an object store by a specified value on a named property of the objects in the store, for example:
 
 ```
     path=index.html
 ```
 
-This query will return all file records with a `path` of `index.html` (which in this case can be at most one record, as `path` is used as the primary key in the file DB).
+This query will return all objects with a `path` property equal to `index.html`.
 
 The filter operation can be modified by appending a comparison specifier to the property name, so for example:
 
@@ -87,7 +98,7 @@ The filter operation can be modified by appending a comparison specifier to the 
     path$prefix=images/
 ```
 
-will match any file records with a `path` property starting with `images/` - e.g. `images/logo.png` or `images/icons/file.png` would both match.
+- will match any objects with a `path` property starting with `images/` - e.g. `images/logo.png` or `images/icons/file.png` would both match.
 Note that the comparison specifier has been supplied by appending `$` followed by a comparison name. The full list of supported comparison specifiers is:
 
 * `$prefix`: Match values starting with the specified value.
@@ -98,21 +109,29 @@ Note that the comparison specifier has been supplied by appending `$` followed b
 Multiple filter operations can be combined. For example, the query:
 
 ```
-    page.date$from=2018-01-01&page.date$to=2018-12-31
+    date$from=2018-01-01&date$to=2018-12-31
 ```
 
-could be used to match files within a certain date range, whilst the query:
+could be used to match objects within a certain date range, whilst the query:
 
 ```
-    path$prefix=pages/&category=files
+    path$prefix=pages/&category=images
 ```
 
-could be used to find files in a specific category and under a specific path.
+could be used to find objects representing files in a specific category and under a specific path.
 
 ### Filter names
 
-The name used to specify filters can be an index name or a path to a property value on a file DB record.
-Filters on index names are naturally quicker and more efficient than property names, which require a scan of all values to find matching records.
+The name used to specify filters can be an index name or a path to a an arbitary property value on objects in the store.
+For example:
+
+```
+    order.date=2019-03-02&order.value$from=100
+```
+
+could be used to query on two values of a nested property.
+
+Filters on index names are naturally quicker and more efficient than property names, which require a scan of all objects to find matches.
 
 ### Control parameters
 
@@ -123,9 +142,8 @@ The available control parameters are:
 * `$from`: Specify start offset of the first row returned.
 * `$to`: Specify the end offset of the last row returned.
 * `$limit`: Specify the maximum number of rows to return.
-* `$format`: Specify the format of the result. By default, the API returns a list of all matched records. This can be modified by specifying one of the following:
-    * `$format=keys`: Return just a list of the primary keys of each matched record.
-    * `$format=lookup`: Return an object mapping each matched record's primary key to the record.
+* `$format`: Specify the format of the result. By default, the API returns a list of all matched objects. This can be modified by specifying one of the following:
+    * `$format=keys`: Return just a list of the primary keys of each matched object.
+    * `$format=lookup`: Return an object mapping each matched object's primary key to the object.
 * `$orderBy`: Specify the sort order of the result. The value is the property path of the value to sort by.
-
 
