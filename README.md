@@ -27,7 +27,7 @@ With this in mind, it should be seen that the main goal of this module is to pro
     https://example.com/query.api?category=sales&name$prefix=Dur&$from=20$$limit=10
 ```
 
-- when requested by the browser can be either handled and resolved by the server, or handled locally by a service worker when available, and that both modes can be handled seemlessly with no differences in operation other than response time and offline capability.
+when requested by the browser can be either handled and resolved by the server, or handled locally by a service worker, when available; and that both modes can be handled seemlessly with no differences in operation other than response time and offline capability.
 As such, this module should be seen as a specification of the HTTP query API as much as an implementation of that API, and it should be possible to implement the API server side on platforms other than Node.js.
 
 ## Setup
@@ -72,9 +72,9 @@ The query function has the following API:
 
 **Arguments**:
 
-* `schema`: A database schema object. See <https://github.com/locomote-sh/idb> for details.
-* `store`: The name of the object store being queried; the store must appear in the schema.
-* `params`: An object containing the query parameters. Can be presented as either a plain object or as an [URLSearchParam object](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams).
+* `schema`: A database schema object. See <https://github.com/locomote-sh/idb> for details of the schema format.
+* `store`: The name of the object store being queried; the store name must appear in the schema.
+* `params`: An object containing the query parameters. Can be presented as either a plain JS object or as an [URLSearchParam object](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams).
 
 **Returns**: A promise resolving to an array or object containing the query results.
 
@@ -98,7 +98,7 @@ The filter operation can be modified by appending a comparison specifier to the 
     path$prefix=images/
 ```
 
-- will match any objects with a `path` property starting with `images/` - e.g. `images/logo.png` or `images/icons/file.png` would both match.
+will match any objects with a `path` property starting with `images/` - e.g. `images/logo.png` or `images/icons/file.png` would both match.
 Note that the comparison specifier has been supplied by appending `$` followed by a comparison name. The full list of supported comparison specifiers is:
 
 * `$prefix`: Match values starting with the specified value.
