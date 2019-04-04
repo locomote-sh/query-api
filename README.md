@@ -74,13 +74,19 @@ The query function has the following API:
 
 * `schema`: A database schema object. See <https://github.com/locomote-sh/idb> for details of the schema format.
 * `store`: The name of the object store being queried; the store name must appear in the schema.
-* `params`: An object containing the query parameters. Can be presented as either a plain JS object or as an [URLSearchParam object](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams).
+* `params`: An object containing the query parameters. Can be presented as either:
+  * as a query string in `param1=value1&param2=value2` format;
+  * a plain JS object containing parameter names and values, e.g. `{ name: value }`;
+  * or as an [URLSearchParam object](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams).
 
 **Returns**: A promise resolving to an array or object containing the query results.
 
 ## Usage
 
-Queries are defined using HTTP request parameters.
+Queries are defined using sets of parameter names and values.
+As you can see from the list of formats expected by the `params` argument to the `query()` function - described above - these parameters can be specified in a number of ways.
+The descriptions below use the query string format that you would expect to see in a HTTP URL,
+and so the query parameters are represented below as HTTP request parameters.
 
 ### Filters
 
