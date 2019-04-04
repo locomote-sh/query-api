@@ -1,7 +1,8 @@
 {
     "name": "@locomote.sh/query-api",
-    "version": "0.8.7",
+    "version": "0.8.8",
     "description": "A HTTP compatible API for querying IndexedDB object stores",
+    "keywords": "indexeddb query http",
     "main": "lib/query.js",
     "scripts": {
         "test": "mocha"
