@@ -1,12 +1,12 @@
 # query-api
 
-A HTTP compatible API for querying IndexedDB object store contents either in the browser, from a page or service worker context, or server side in a Node.js process.
+A HTTP compatible API for querying _IndexedDB_ object store contents either in the browser, from a page or service worker context, or server side in a _Node.js_ process.
 
 ## Description
 
-This module provides an API for querying the contents of an IndexedDB object store.
+This module provides an API for querying the contents of an [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) [object store](https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore).
 Queries can be easily and naturally described using the parameters to a HTTP GET request.
-The query engine can run either in the browser or on a Node.js process on the server.
+The query engine can run either in the browser or on a _Node.js_ process on the server.
 
 ## Motivation
 
