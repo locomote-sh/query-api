@@ -12,7 +12,7 @@ The query engine can run either in the browser or on a _Node.js_ process on the 
 
 The query API is designed principally for use with service workers to provide offline capable querying functionality to web pages.
 
-A difficulty with implementing query functionality within a service worker is the possibility that the service worker isn't available, either because the code is running on a browser without service worker support, or because of the service worker lifecycle and the possibility that the page is running before the service worker has been installed and activated.
+A difficulty with implementing query functionality within a service worker is the possibility that the service worker isn't available when the query is called, either because the code is running on a browser without service worker support, or because of the service worker lifecycle and the possibility that the page is running before the service worker has been installed and activated.
 The simplest way to resolve these problems is to ensure that any URLs handled locally by the service worker can also be handled remotely by the originating server.
 
 Using this module, it is possible to support querying both remotely, on the server-side, or locally, in an offline capable fashion, either in a service worker or in code running in the page.
