@@ -76,7 +76,7 @@ The query function has the following API:
 * `store`: The name of the object store being queried; the store name must appear in the schema.
 * `params`: An object containing the query parameters. Can be presented as either:
   * as a query string in `param1=value1&param2=value2` format;
-  * a plain JS object containing parameter names and values, e.g. `{ name: value }`;
+  * as a plain JS object containing parameter names and values, e.g. `{ name: value }`;
   * or as an [URLSearchParam object](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams).
 
 **Returns**: A promise resolving to an array or object containing the query results.
