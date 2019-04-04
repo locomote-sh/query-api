@@ -1,7 +1,7 @@
 {
     "name": "@locomote.sh/query-api",
     "version": "0.8.7",
-    "description": "Locomote content server query API core functions",
+    "description": "A HTTP compatible API for querying IndexedDB object stores",
     "main": "lib/query.js",
     "scripts": {
         "test": "mocha"
@@ -18,8 +18,8 @@
     },
     "homepage": "https://github.com/locomote-sh/query-api#readme",
     "dependencies": {
-        "@locomote.sh/idb": "git+https://github.com/locomote-sh/idb.git",
-        "@locomote.sh/utils": "git+https://github.com/locomote-sh/utils.git",
+        "@locomote.sh/idb": "^1.1.0",
+        "@locomote.sh/utils": "^1.0.0",
         "indexeddbshim": "^3.10.0"
     },
     "devDependencies": {
