@@ -1,0 +1,58 @@
+<html>
+    <script src="idb.js"></script>
+    <script src="../lib/query.js"></script>
+    <script>
+        window.onload = async () => {
+
+            // Initialize libs.
+            const idb = initIDB( window );
+            const query = initQuery( idb );
+
+            // DB schema.
+            const schema = {
+                name: 'test',
+                version: 1,
+                stores: {
+                    'fruits': {
+                        options: {
+                            keyPath: 'name'
+                        },
+                        indexes: {
+                            'info.color': {
+                                keyPath: 'info.color',
+                                options: { unique: false }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Populate db.
+            const fruits = [
+                { name: 'apple', info: { color: 'green' } },
+                { name: 'orange', info: { color: 'orange' } },
+                { name: 'pear', info: { color: 'green' } },
+                { name: 'grape', info: { color: 'green' } },
+                { name: 'banana', info: { color: 'yellow' } }
+            ];
+            const { idbOpenObjStore, idbWrite } = idb;
+            const objStore = await idbOpenObjStore( schema, 'fruits', 'readwrite');
+            await Promise.all( fruits.map( f => idbWrite( objStore, f ) ) );
+
+            // Test queries.
+            const queries = [
+                { 'name': 'apple' },
+                { 'info.color': 'green' },
+                { 'name': 'pear', 'info.color': 'green' },
+                { 'name': 'banana', 'info.color': 'red' }
+            ];
+
+            await Promise.all( queries.map( async ( q ) => {
+                const result = await query( schema, 'fruits', q );
+                console.log('Query:', JSON.stringify( q ) );
+                console.log( result );
+            }));
+
+        }
+    </script>
+</html>
