@@ -52,13 +52,12 @@ describe('Query tests', () => {
         ];
 
         const {
-            idbOpenObjStore,
-            idbWrite
+            idbConnect
         } = idb;
 
-        const objStore = await idbOpenObjStore( schema, 'files', 'readwrite');
+        const { write } = await idbConnect( schema, 'files');
 
-        await Promise.all( Data.map( data => idbWrite( objStore, data ) ) );
+        await Promise.all( Data.map( data => write( data ) ) );
 
     });
 
