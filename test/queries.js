@@ -52,13 +52,12 @@ describe('Query tests', () => {
         ];
 
         const {
-            idbOpenObjStore,
-            idbWrite
+            idbConnect
         } = idb;
 
-        const objStore = await idbOpenObjStore( schema, 'files', 'readwrite');
+        const { write } = await idbConnect( schema, 'files');
 
-        await Promise.all( Data.map( data => idbWrite( objStore, data ) ) );
+        await Promise.all( Data.map( data => write( data ) ) );
 
     });
 
@@ -81,6 +80,7 @@ describe('Query tests', () => {
     test('pk=aaa&group=aaa',       ['aaa']);
     test('pk=aaa&group=bbb',       []);
     test('pk$from=a&group=bbb',    ['bbb','ccc']);
+
 });
 
 function test( params, expected ) {
