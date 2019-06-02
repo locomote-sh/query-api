@@ -80,6 +80,7 @@ describe('Query tests', () => {
     test('pk=aaa&group=aaa',       ['aaa']);
     test('pk=aaa&group=bbb',       []);
     test('pk$from=a&group=bbb',    ['bbb','ccc']);
+
 });
 
 function test( params, expected ) {
