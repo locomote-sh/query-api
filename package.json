@@ -21,7 +21,7 @@
         "@locomote.sh/idb": "^1.1.0"
     },
     "dependencies": {
-        "@locomote.sh/idb": "git+https://github.com/locomote-sh/query-api.git#idb-v2-changes",
+        "@locomote.sh/idb": "git+https://github.com/locomote-sh/idb.git#idb-v2-changes",
         "@locomote.sh/utils": "^1.0.0",
         "indexeddbshim": "^3.10.0"
     },
